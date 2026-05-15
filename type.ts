@@ -14,7 +14,6 @@ interface Transaction {
   description: string;
   createdAt: Date;
   budgetName?: string;
-  budgetId: string ;
+  budgetId: string | null;   
 }
-
 
