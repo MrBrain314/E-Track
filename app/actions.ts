@@ -1,14 +1,27 @@
 "use server";
 
 import prisma from "@/lib/prisma";
-import { Prisma } from "@prisma/client";
 
-// Type Prisma pour un budget avec ses transactions
-type BudgetWithTransactions = Prisma.BudgetGetPayload<{
-  include: { transactions: true };
-}>;
+// Types pour les résultats Prisma avec relations
+type TransactionItem = {
+  id: string;
+  amount: number;
+  description: string;
+  emoji: string | null;
+  budgetId: string;
+  date: Date;
+  createdAt: Date;
+};
 
-type TransactionItem = BudgetWithTransactions["transactions"][number];
+type BudgetWithTransactions = {
+  id: string;
+  name: string;
+  amount: number;
+  userId: string;
+  emoji: string | null;
+  createdAt: Date;
+  transactions: TransactionItem[];
+};
 
 export async function checkAndAddUser(email: string | undefined) {
   if (!email) return;
@@ -199,11 +212,12 @@ export async function getTransactionsByEmailAndPeriod(
       throw new Error("Utilisateur non trouvé.");
     }
 
-    const transactions = user.budgets.flatMap((budget: BudgetWithTransactions) =>
-      budget.transactions.map((transaction: TransactionItem) => ({
-        ...transaction,
-        budgetName: budget.name,
-      })),
+    const transactions = user.budgets.flatMap(
+      (budget: BudgetWithTransactions) =>
+        budget.transactions.map((transaction: TransactionItem) => ({
+          ...transaction,
+          budgetName: budget.name,
+        })),
     );
 
     return transactions;
