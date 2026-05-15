@@ -121,7 +121,7 @@ export async function addTransactionToBudget(
     }
 
     const totalTransactions = budget.transactions.reduce(
-      (sum: number, transaction) => {
+      (sum: number, transaction: Transaction) => {
         return sum + transaction.amount;
       },
       0,
