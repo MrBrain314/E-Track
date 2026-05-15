@@ -32,8 +32,8 @@ model Transaction {
   emoji       String?
   date        DateTime @default(now())
 
-  budgetId    String?
-  budget      Budget?  @relation(fields: [budgetId], references: [id])
+  budgetId    String
+  budget      Budget  @relation(fields: [budgetId], references: [id])
 
   createdAt   DateTime @default(now())
 }

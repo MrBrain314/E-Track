@@ -33,10 +33,10 @@ const Navbar = () => {
 
               <div className="md:flex gap-6 hidden">
                 <Link href="/budgets" className="btn">
-                  Mes budgets
+                  Mes Budgets
                 </Link>
                 <Link href="/dashboard" className="btn">
-                  Tableau de bord
+                  Tableau de Bord
                 </Link>
                 <Link href="/transactions" className="btn">
                   Mes Transactions
@@ -46,10 +46,10 @@ const Navbar = () => {
             </div>
             <div className="md:hidden flex gap-3 mt-2 justify-center">
               <Link href="/budgets" className="btn btn-sm">
-                Mes budgets
+                Mes Budgets
               </Link>
               <Link href="/dashboard" className="btn btn-sm">
-                Tableau de bord
+                Tableau de Bord
               </Link>
               <Link href="/transactions" className="btn btn-sm">
                 Mes Transactions

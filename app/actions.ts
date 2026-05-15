@@ -195,4 +195,158 @@ export async function deleteTransaction(transactionId: string) {
   }
 }
 
+export async function getTransactionsByEmailAndPeriod(
+  email: string,
+  period: string,
+) {
+  try {
+    const now = new Date();
+    let dateLimit: Date;
+
+    switch (period) {
+      case "last7":
+        dateLimit = new Date(now);
+        dateLimit.setDate(now.getDate() - 7);
+        break;
+      case "last30":
+        dateLimit = new Date(now);
+        dateLimit.setDate(now.getDate() - 30);
+        break;
+      case "last90":
+        dateLimit = new Date(now);
+        dateLimit.setDate(now.getDate() - 90);
+        break;
+      case "last360":
+        dateLimit = new Date(now);
+        dateLimit.setFullYear(now.getFullYear() - 1);
+        break;
+      default:
+        throw new Error("Période invalide.");
+    }
+
+    const user = await prisma.user.findUnique({
+      where: { email },
+      include: {
+        budgets: {
+          include: {
+            transactions: {
+              where: {
+                createdAt: {
+                  gte: dateLimit,
+                },
+              },
+              orderBy: {
+                createdAt: "desc",
+              },
+            },
+          },
+        },
+      },
+    });
+
+    if (!user) {
+      throw new Error("Utilisateur non trouvé.");
+    }
+
+    const transactions = user.budgets.flatMap((budget) =>
+      budget.transactions.map((transaction) => ({
+        ...transaction,
+        budgetName: budget.name,
+      })),
+    );
+
+    return transactions;
+  } catch (error) {
+    console.error("Erreur lors de la récupération des transactions:", error);
+    throw error;
+  }
+}
+
+
+
+export async function getDashboardData(email: string) {
+  try {
+    const user = await prisma.user.findUnique({
+      where: { email },
+      include: {
+        budgets: {
+          orderBy: { createdAt: "desc" },
+          include: {
+            transactions: {
+              orderBy: { createdAt: "desc" },
+            },
+          },
+        },
+      },
+    });
+
+    if (!user) {
+      throw new Error("Utilisateur non trouvé.");
+    }
+
+    // KPI globaux 
+    const totalSpent = user.budgets.reduce(
+      (s, b) => s + b.transactions.reduce((ss, t) => ss + t.amount, 0),
+      0,
+    );
+
+    const transactionsCount = user.budgets.reduce(
+      (s, b) => s + b.transactions.length,
+      0,
+    );
+
+    const reachedBudgetsCount = user.budgets.filter(
+      (b) => b.transactions.reduce((s, t) => s + t.amount, 0) >= b.amount,
+    ).length;
+
+    const stats = {
+      totalSpent,
+      transactionsCount,
+      reachedBudgetsCount,
+      totalBudgetsCount: user.budgets.length,
+    };
+
+    // Bar chart : budget vs dépensé, par budget
+    const chartByBudget = user.budgets.map((b) => ({
+      name: b.name,
+      budget: b.amount,
+      spent: b.transactions.reduce((s, t) => s + t.amount, 0),
+    }));
+
+    //  Dernières transactions (toutes confondues, top 5)
+    const allTransactions = user.budgets
+      .flatMap((b) =>
+        b.transactions.map((t) => ({
+          id: t.id,
+          amount: t.amount,
+          description: t.description,
+          createdAt: t.createdAt,
+          budgetName: b.name,
+        })),
+      )
+      .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime())
+      .slice(0, 5);
+
+    //  Derniers budgets 
+    const lastBudgets = user.budgets.slice(0, 3).map((b) => ({
+      id: b.id,
+      name: b.name,
+      emoji: b.emoji,
+      amount: b.amount,
+      spent: b.transactions.reduce((s, t) => s + t.amount, 0),
+      transactionsCount: b.transactions.length,
+    }));
+
+    return {
+      stats,
+      chartByBudget,
+      lastTransactions: allTransactions,
+      lastBudgets,
+    };
+  } catch (error) {
+    console.error("Erreur dashboard :", error);
+    throw error;
+  }
+}
+
 

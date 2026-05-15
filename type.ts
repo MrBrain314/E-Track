@@ -4,7 +4,7 @@ interface Budget {
   name: string;
   amount: number;
   emoji: string | null;
-  transactions?: Transaction[];
+  transactions: Transaction[];
 }
 
 interface Transaction {
@@ -14,7 +14,7 @@ interface Transaction {
   description: string;
   createdAt: Date;
   budgetName?: string;
-  budgetId?: string | null;
+  budgetId: string ;
 }
 
 
