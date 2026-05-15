@@ -120,9 +120,12 @@ export async function addTransactionToBudget(
       throw new Error('Budget non trouvé.')
     }
 
-    const totalTransactions = budget.transactions.reduce((sum, transaction) => {
-      return sum + transaction.amount
-    }, 0)
+    const totalTransactions = budget.transactions.reduce(
+      (sum: number, transaction) => {
+        return sum + transaction.amount;
+      },
+      0,
+    );
 
     const totalWithNewTransaction = totalTransactions + amount
 
