@@ -114,7 +114,8 @@ const Page = () => {
           <h2 className="font-semibold text-lg">Aucune transaction</h2>
           <p className="text-gray-500 text-sm text-center max-w-xs">
             Aucune transaction n&apos;a été enregistrée pour cette période.
-            Essayez d&apos;élargir la plage de dates ou commencez par ajouter une dépense.
+            Essayez d&apos;élargir la plage de dates ou commencez par ajouter
+            une dépense.
           </p>
         </div>
       ) : (
@@ -136,7 +137,11 @@ const Page = () => {
                 {transactions.map((transaction) => (
                   <tr
                     key={transaction.id}
-                    onClick={() => handleRowClick(transaction.budgetId)}
+                    onClick={() => {
+                      if (transaction.budgetId) {
+                        handleRowClick(transaction.budgetId);
+                      }
+                    }}
                     className="hover cursor-pointer group"
                   >
                     <td className="text-2xl text-center align-middle">
