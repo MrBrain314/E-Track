@@ -8,7 +8,7 @@ type TransactionItem = {
   amount: number;
   description: string;
   emoji: string | null;
-  budgetId: string;
+  budgetId: string | null;
   date: Date;
   createdAt: Date;
 };
