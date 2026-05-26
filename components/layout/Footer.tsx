@@ -63,41 +63,44 @@ const Footer = () => {
           </div>
 
           {/* Colonne 3 : Liens sociaux */}
-          <div className="flex flex-col gap-3 items-center text-center">
+          <div className="flex flex-col gap-3">
             <h3 className="font-semibold text-sm uppercase tracking-wider">
               Restons en contact
             </h3>
 
-            <div className="flex gap-2">
-              <a
-                href="https://github.com/MrBrain314"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="GitHub"
-                className="btn btn-circle btn-ghost btn-sm"
-              >
-                <FaGithub className="w-4 h-4" />
-              </a>
-
-              <a
-                href="https://www.linkedin.com/in/ouro-tagbabastou/"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="LinkedIn"
-                className="btn btn-circle btn-ghost btn-sm"
-              >
-                <FaLinkedin className="w-4 h-4" />
-              </a>
-
-              <a
-                href="mailto:ourotagbabastouu@gmail.com"
-                aria-label="Email"
-                className="btn btn-circle btn-ghost btn-sm"
-              >
-                <Mail className="w-4 h-4" />
-              </a>
-
-            </div>
+            <ul className="flex flex-col gap-2 text-sm">
+              <li>
+                <a
+                  href="https://github.com/MrBrain314"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-2 text-gray-500 hover:text-accent transition-colors"
+                >
+                  <FaGithub className="w-4 h-4" />
+                  GitHub
+                </a>
+              </li>
+              <li>
+                <a
+                  href="https://www.linkedin.com/in/ouro-tagbabastou/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-2 text-gray-500 hover:text-accent transition-colors"
+                >
+                  <FaLinkedin className="w-4 h-4" />
+                  LinkedIn
+                </a>
+              </li>
+              <li>
+                <a
+                  href="mailto:ourotagbabastouu@gmail.com"
+                  className="flex items-center gap-2 text-gray-500 hover:text-accent transition-colors"
+                >
+                  <Mail className="w-4 h-4" />
+                  Email
+                </a>
+              </li>
+            </ul>
           </div>
 
           {/* Colonne 4 : Démo vidéo */}
