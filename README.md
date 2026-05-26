@@ -9,11 +9,11 @@ e.Track est une application web de gestion budgétaire personnelle. Elle permet 
 | | | |
 |---|---|---|
 | **1. Page d'accueil** | **2. Bilan personnel** | **3. Page de connexion** |
-| <img src="screenshots/01-home.png" width="300"/> | <img src="screenshots/02-bilan.png" width="300"/> | <img src="screenshots/03-signin.png" width="300"/> |
+| <img src="https://github.com/MrBrain314/E-Track/blob/main/Captures/ACCUEIL.png?raw=true" width="300"/> | <img src="https://github.com/MrBrain314/E-Track/blob/main/Captures/BILAN.png?raw=true" width="300"/> | <img src="https://github.com/MrBrain314/E-Track/blob/main/Captures/CONNEXION.png?raw=true" width="300"/> |
 | **4. Mes budgets** | **5. Création d'un budget** | **6. Détail d'un budget** |
-| <img src="screenshots/04-budgets.png" width="300"/> | <img src="screenshots/05-create-budget.png" width="300"/> | <img src="screenshots/06-budget-detail.png" width="300"/> |
+| <img src="https://github.com/MrBrain314/E-Track/blob/main/Captures/BUDGETS.png?raw=true" width="300"/> | <img src="https://github.com/MrBrain314/E-Track/blob/main/Captures/CREATION%20DE%20BUDGET.png?raw=true" width="300"/> | <img src="https://github.com/MrBrain314/E-Track/blob/main/Captures/DETAIL%20BUDGET.png?raw=true" width="300"/> |
 | **7. Ajout d'une transaction** | **8. Tableau de bord** | **9. Historique des transactions** |
-| <img src="screenshots/07-add-transaction.png" width="300"/> | <img src="screenshots/08-dashboard.png" width="300"/> | <img src="screenshots/09-transactions.png" width="300"/> |
+| <img src="https://github.com/MrBrain314/E-Track/blob/main/Captures/AJOUT%20DE%20TRANSACTION.png?raw=true" width="300"/> | <img src="https://github.com/MrBrain314/E-Track/blob/main/Captures/DASHBOARD.png?raw=true" width="300"/> | <img src="https://github.com/MrBrain314/E-Track/blob/main/Captures/HISTORIQUE%20DES%20TRANSACTIONS.png?raw=true" width="300"/> |
 
 
 ---
@@ -206,4 +206,4 @@ Une démonstration vidéo de l'application est disponible ici :
 
 ## Auteur
 
-**@MrBrain** — [GitHub](https://github.com/MrBrain314) · [LinkedIn](https://www.linkedin.com/in/ouro-tagbabastou/) · [Email](mailto:ourotagbabastouu@gmail.com)
+**@MrBrain** - [GitHub](https://github.com/MrBrain314) · [LinkedIn](https://www.linkedin.com/in/ouro-tagbabastou/) · [Email](mailto:ourotagbabastouu@gmail.com)
