@@ -1,4 +1,7 @@
+"use client";
+
 import React from "react";
+import { useCurrency } from "@/context/CurrencyContext";
 
 interface BudgetItemProps {
   budget: Budget;
@@ -6,6 +9,7 @@ interface BudgetItemProps {
 }
 
 const BudgetItem: React.FC<BudgetItemProps> = ({ budget, enableHover }) => {
+  const { convert } = useCurrency();
   const transactionCount = budget.transactions ? budget.transactions.length : 0;
   const totalTransactionAmount = budget.transactions
     ? budget.transactions.reduce(
@@ -41,11 +45,11 @@ const BudgetItem: React.FC<BudgetItemProps> = ({ budget, enableHover }) => {
             </span>
           </div>
         </div>
-        <div className="text-2xl font-bold text-accent">{budget.amount} €</div>
+        <div className="text-2xl font-bold text-accent">{convert(budget.amount)}</div>
       </div>
       <div className="flex justify-between items-center mt-4 text-gray-500 text-sm">
-        <span>{totalTransactionAmount} € dépensés</span>
-        <span>{remainingAmount} € restants</span>
+        <span>{convert(totalTransactionAmount)} dépensés</span>
+        <span>{convert(remainingAmount)} restants</span>
       </div>
       <div>
         <progress

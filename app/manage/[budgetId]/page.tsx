@@ -11,9 +11,11 @@ import Wrapper from "@/components/section/Wrapper";
 import Notification from "@/components/section/Notification";
 import React, { useEffect, useState } from "react";
 import { Send, Trash } from "lucide-react";
+import { useCurrency } from "@/context/CurrencyContext";
 import { redirect } from "next/navigation";
 
 const Page = ({ params }: { params: Promise<{ budgetId: string }> }) => {
+  const { convert } = useCurrency();
   const [budgetId, setBudgetId] = useState<string>("");
   const [budget, setBudget] = useState<Budget>();
   const [description, setDescription] = useState<string>("");
@@ -168,7 +170,7 @@ const Page = ({ params }: { params: Promise<{ budgetId: string }> }) => {
                           </td>
                           <td className="text-right align-middle">
                             <span className="badge badge-accent badge-sm font-semibold">
-                              - {transaction.amount} €
+                              - {convert(transaction.amount)}
                             </span>
                           </td>
                           <td className="align-middle font-medium">

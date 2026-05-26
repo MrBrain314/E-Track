@@ -4,9 +4,11 @@ import React, { useEffect } from "react";
 import { UserButton, useUser } from "@clerk/nextjs";
 import Link from "next/link";
 import { checkAndAddUser } from "@/app/actions";
+import { CURRENCIES, useCurrency } from "@/context/CurrencyContext";
 
 const Navbar = () => {
   const { isLoaded, isSignedIn, user } = useUser();
+  const { currency, setCurrency } = useCurrency();
 
   useEffect(() => {
     if (user?.primaryEmailAddress?.emailAddress) {
@@ -42,7 +44,27 @@ const Navbar = () => {
                   Mes Transactions
                 </Link>
               </div>
-              <UserButton />
+              <div className="flex items-center gap-3">
+                <div className="dropdown dropdown-end">
+                  <label tabIndex={0} className="btn btn-ghost btn-sm gap-1 font-semibold">
+                    {currency.symbol} <span className="text-xs">▾</span>
+                  </label>
+                  <ul tabIndex={0} className="dropdown-content menu p-1 shadow bg-base-100 rounded-box w-44 z-50 border border-base-300">
+                    <li className="menu-title text-xs text-gray-400 px-3 py-2">Choisir votre devise</li>
+                    {CURRENCIES.map((c) => (
+                      <li key={c.code}>
+                        <button
+                          onClick={() => setCurrency(c)}
+                          className={currency.code === c.code ? "active" : ""}
+                        >
+                          {c.symbol} - {c.label}
+                        </button>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+                <UserButton />
+              </div>
             </div>
             <div className="md:hidden flex gap-3 mt-2 justify-center">
               <Link href="/budgets" className="btn btn-sm">

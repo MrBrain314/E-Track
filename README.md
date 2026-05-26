@@ -24,6 +24,7 @@ e.Track est une application web de gestion budgétaire personnelle. Elle permet 
 - Ajout de transactions liées à chaque budget
 - Tableau de bord avec graphiques et statistiques
 - Historique des transactions filtrable par période
+- **Multi-devises en temps réel** : EUR, USD, FCFA avec taux de change live via [open.er-api.com](https://open.er-api.com) (sans clé API)
 - Authentification sécurisée via Clerk
 - Base de données PostgreSQL hébergée sur Supabase
 - Interface responsive en français
@@ -42,6 +43,7 @@ e.Track est une application web de gestion budgétaire personnelle. Elle permet 
 | ORM | Prisma 7 |
 | Base de données | PostgreSQL (Supabase) |
 | Driver DB | @prisma/adapter-pg |
+| Taux de change | open.er-api.com (gratuit, sans clé) |
 | Icônes | Lucide React, React Icons |
 
 ---
@@ -124,12 +126,15 @@ etrack/
 │   └── page.tsx           # Page d'accueil
 ├── components/
 │   ├── layout/
-│   │   ├── Navbar.tsx
+│   │   ├── Navbar.tsx     # Sélecteur de devise intégré
 │   │   └── Footer.tsx
 │   └── section/
 │       ├── BudgetItem.tsx
+│       ├── BilanSection.tsx   # Bilan global de la page d'accueil
 │       ├── Notification.tsx
 │       └── Wrapper.tsx
+├── context/
+│   └── CurrencyContext.tsx    # Contexte devises + conversion temps réel
 ├── lib/
 │   └── prisma.ts          # Client Prisma (singleton)
 ├── prisma/
