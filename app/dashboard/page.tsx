@@ -6,6 +6,7 @@ import { CircleDollarSign, Receipt, Trophy } from "lucide-react";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import { getDashboardData } from "../actions";
+import { useCurrency } from "@/context/CurrencyContext";
 import {
   Bar,
   BarChart,
@@ -18,9 +19,13 @@ import {
 } from "recharts";
 
 type DashboardData = Awaited<ReturnType<typeof getDashboardData>>;
+type LastTransaction = DashboardData["lastTransactions"][number];
+type LastBudget = DashboardData["lastBudgets"][number];
+type ChartItem = DashboardData["chartByBudget"][number];
 
 const Dashboard = () => {
   const { user } = useUser();
+  const { currency, convert } = useCurrency();
   const [data, setData] = useState<DashboardData | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
 
@@ -62,7 +67,7 @@ const Dashboard = () => {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
         <KpiCard
           label="Total des Transactions"
-          value={`${data.stats.totalSpent.toFixed(0)}€`}
+          value={convert(data.stats.totalSpent)}
           icon={<CircleDollarSign className="w-5 h-5" />}
         />
         <KpiCard
@@ -77,20 +82,20 @@ const Dashboard = () => {
         />
       </div>
 
-      {/* Grille principale : chart + transactions à gauche, budgets à droite */}
+      {/* Grille principale */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
         {/* Colonne gauche : chart + dernières transactions */}
         <div className="lg:col-span-2 flex flex-col gap-4">
           {/* Bar chart */}
           <div className="card bg-base-100 border border-base-300 p-5">
-            <h2 className="font-semibold mb-4">Statistiques ( en € )</h2>
+            <h2 className="font-semibold mb-4">Statistiques ( en {currency.symbol} )</h2>
             {data.chartByBudget.length === 0 ? (
               <div className="h-70 flex items-center justify-center text-sm text-gray-400">
                 Aucun budget à afficher.
               </div>
             ) : (
               <ResponsiveContainer width="100%" height={280}>
-                <BarChart data={data.chartByBudget}>
+                <BarChart data={data.chartByBudget as ChartItem[]}>
                   <CartesianGrid
                     strokeDasharray="3 3"
                     vertical={false}
@@ -99,7 +104,7 @@ const Dashboard = () => {
                   <XAxis dataKey="name" stroke="#9ca3af" fontSize={12} />
                   <YAxis stroke="#9ca3af" fontSize={12} />
                   <Tooltip
-                    formatter={(value) => `${Number(value).toFixed(2)} €`}
+                    formatter={(value) => convert(Number(value))}
                     contentStyle={{
                       borderRadius: 8,
                       border: "1px solid #e5e7eb",
@@ -130,14 +135,14 @@ const Dashboard = () => {
               <p className="text-sm text-gray-500">Aucune transaction.</p>
             ) : (
               <ul className="divide-y divide-base-300">
-                {data.lastTransactions.map((t) => (
+                {data.lastTransactions.map((t: LastTransaction) => (
                   <li
                     key={t.id}
                     className="flex flex-col md:flex-row md:items-center justify-between gap-2 py-3"
                   >
                     <div className="flex items-center gap-3 flex-1 min-w-0">
                       <span className="badge badge-accent badge-md font-semibold whitespace-nowrap">
-                        - {t.amount} €
+                        - {convert(t.amount)}
                       </span>
                       <span className="badge badge-ghost badge-sm">
                         {t.budgetName}
@@ -177,7 +182,7 @@ const Dashboard = () => {
             {data.lastBudgets.length === 0 ? (
               <p className="text-sm text-gray-500">Aucun budget.</p>
             ) : (
-              data.lastBudgets.map((b) => {
+              data.lastBudgets.map((b: LastBudget) => {
                 const pct = Math.min((b.spent / b.amount) * 100, 100);
                 const exceeded = b.spent > b.amount;
                 const remaining = Math.max(b.amount - b.spent, 0);
@@ -200,12 +205,12 @@ const Dashboard = () => {
                         </div>
                       </div>
                       <span className="font-bold text-accent">
-                        {b.amount} €
+                        {convert(b.amount)}
                       </span>
                     </div>
                     <div className="flex justify-between text-sm text-gray-500 mb-2">
-                      <span>{b.spent.toFixed(0)} € dépensés</span>
-                      <span>{remaining.toFixed(0)} € restants</span>
+                      <span>{convert(b.spent)} dépensés</span>
+                      <span>{convert(remaining)} restants</span>
                     </div>
                     <progress
                       className={`progress w-full ${

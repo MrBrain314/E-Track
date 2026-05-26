@@ -6,6 +6,7 @@ import { ChevronRight, Inbox, Wallet } from "lucide-react";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { getTransactionsByEmailAndPeriod } from "../actions";
+import { useCurrency } from "@/context/CurrencyContext";
 
 const periods = [
   { label: "7 jours", value: "last7" },
@@ -17,6 +18,7 @@ const periods = [
 const Page = () => {
   const { user } = useUser();
   const router = useRouter();
+  const { convert } = useCurrency();
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [period, setPeriod] = useState<string>("last30");
@@ -79,7 +81,7 @@ const Page = () => {
           <p className="text-gray-500 text-sm mt-1">
             {loading
               ? "Chargement..."
-              : `${transactions.length} transaction${transactions.length > 1 ? "s" : ""} - ${total.toFixed(2)} € dépensés`}
+              : `${transactions.length} transaction${transactions.length > 1 ? "s" : ""} - ${convert(total)} dépensés`}
           </p>
         </div>
 
@@ -114,7 +116,8 @@ const Page = () => {
           <h2 className="font-semibold text-lg">Aucune transaction</h2>
           <p className="text-gray-500 text-sm text-center max-w-xs">
             Aucune transaction n&apos;a été enregistrée pour cette période.
-            Essayez d&apos;élargir la plage de dates ou commencez par ajouter une dépense.
+            Essayez d&apos;élargir la plage de dates ou commencez par ajouter
+            une dépense.
           </p>
         </div>
       ) : (
@@ -136,7 +139,11 @@ const Page = () => {
                 {transactions.map((transaction) => (
                   <tr
                     key={transaction.id}
-                    onClick={() => handleRowClick(transaction.budgetId)}
+                    onClick={() => {
+                      if (transaction.budgetId) {
+                        handleRowClick(transaction.budgetId);
+                      }
+                    }}
                     className="hover cursor-pointer group"
                   >
                     <td className="text-2xl text-center align-middle">
@@ -152,7 +159,7 @@ const Page = () => {
                     </td>
                     <td className="text-right align-middle">
                       <span className="badge badge-accent badge-sm font-semibold">
-                        - {transaction.amount} €
+                        - {convert(transaction.amount)}
                       </span>
                     </td>
                     <td className="align-middle text-sm text-gray-500">

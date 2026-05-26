@@ -7,7 +7,7 @@ export default function Page() {
       {/* LEFT SIDE */}
       <div className="relative hidden lg:block">
         <Image
-          src="https://images.unsplash.com/photo-1579621970795-87facc2f976d?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8ZXBhcmduZXxlbnwwfHwwfHx8MA%3D%3D"
+          src="https://images.unsplash.com/photo-1603382606058-d01d337dbabd?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
           alt="Background"
           fill
           priority
@@ -19,10 +19,10 @@ export default function Page() {
 
         {/* Content */}
         <div className="relative z-10 flex h-full flex-col justify-end p-12 text-white">
-          <div className="mb-6 text-4xl">🌊</div>
+          <div className="mb-6 text-4xl">💰</div>
 
           <h1 className="text-5xl font-bold leading-tight">
-            Welcome to E-Track <span>🦑</span>
+            Welcome to <span className="text-accent">E-Track</span>
           </h1>
 
           <p className="mt-5 max-w-md text-lg text-white/80">
