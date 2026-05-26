@@ -46,8 +46,10 @@ const Navbar = () => {
               </div>
               <div className="flex items-center gap-3">
                 <div className="dropdown dropdown-end">
-                  <label tabIndex={0} className="btn btn-ghost btn-sm gap-1 font-semibold">
-                    {currency.symbol} <span className="text-xs">▾</span>
+                  <label tabIndex={0} className="btn gap-2">
+                    <span className="hidden md:inline text-sm font-normal">Choisissez votre devise</span>
+                    <span className="font-semibold">{currency.symbol}</span>
+                    <span className="text-xs">▾</span>
                   </label>
                   <ul tabIndex={0} className="dropdown-content menu p-1 shadow bg-base-100 rounded-box w-44 z-50 border border-base-300">
                     <li className="menu-title text-xs text-gray-400 px-3 py-2">Choisir votre devise</li>
