@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Mail } from "lucide-react";
+import { Mail, PlayCircle } from "lucide-react";
 import { FaGithub, FaLinkedin } from "react-icons/fa";
 import React from "react";
 
@@ -10,7 +10,7 @@ const Footer = () => {
     <footer className="bg-base-200/30 border-t border-base-300 mt-16">
       <div className="px-5 md:px-[10%] py-10">
         {/* Section principale */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
           {/* Colonne 1 : Branding */}
           <div className="flex flex-col gap-3">
             <Link
@@ -63,7 +63,7 @@ const Footer = () => {
           </div>
 
           {/* Colonne 3 : Liens sociaux */}
-          <div className="flex flex-col gap-3">
+          <div className="flex flex-col gap-3 items-center text-center">
             <h3 className="font-semibold text-sm uppercase tracking-wider">
               Restons en contact
             </h3>
@@ -96,11 +96,31 @@ const Footer = () => {
               >
                 <Mail className="w-4 h-4" />
               </a>
+
             </div>
+          </div>
+
+          {/* Colonne 4 : Démo vidéo */}
+          <div className="flex flex-col gap-3">
+            <h3 className="font-semibold text-sm uppercase tracking-wider">
+              Voir l&apos;application en action
+            </h3>
+            <p className="text-sm text-gray-500">
+              Envie de découvrir e.Track avant de vous lancer ? Regardez la démonstration complète de l&apos;application.
+            </p>
+            <a
+              href="https://drive.google.com/file/d/1SgnKmcKrYlTubNnzXS6P2dLP_Q9w0cRZ/view?usp=drive_link"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-2 text-sm font-medium text-accent hover:underline w-fit mt-1"
+            >
+              <PlayCircle className="w-4 h-4" />
+              Regarder la démo
+            </a>
           </div>
         </div>
 
-        {/* Barre de séparation : copyright centré */}
+        {/* Barre de séparation : copyright */}
         <div className="border-t border-base-300 pt-6 flex justify-center text-sm text-gray-500">
           <p>
             © {currentYear}{" "}

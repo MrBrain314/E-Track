@@ -11,9 +11,9 @@
   },
   "dependencies": {
     "@clerk/nextjs": "^7.3.3",
-    "@prisma/adapter-better-sqlite3": "^7.8.0",
+    "@prisma/adapter-pg": "^7.8.0",
     "@prisma/client": "^7.8.0",
-    "better-sqlite3": "^12.10.0",
+    "pg": "^8.13.3",
     "emoji-picker-react": "^4.19.1",
     "lucide-react": "^1.14.0",
     "next": "16.2.6",
@@ -24,8 +24,8 @@
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
-    "@types/better-sqlite3": "^7.6.13",
     "@types/node": "^20",
+    "@types/pg": "^8.11.10",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "daisyui": "^5.5.19",
