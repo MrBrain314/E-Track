@@ -172,8 +172,8 @@ export default async function Home() {
               </div>
             </div>
 
-            <Link href="/sign-up" className="btn btn-accent btn-md gap-2">
-              Commencer gratuitement
+            <Link href={isSignedIn ? "/budgets" : "/sign-up"} className="btn btn-accent btn-md gap-2">
+              {isSignedIn ? "Créer mon premier budget" : "Commencer gratuitement"}
               <ArrowRight className="w-4 h-4" />
             </Link>
           </div>
