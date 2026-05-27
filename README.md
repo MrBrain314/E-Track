@@ -25,6 +25,7 @@ e.Track est une application web de gestion budgétaire personnelle. Elle permet 
 - Tableau de bord avec graphiques et statistiques
 - Historique des transactions filtrable par période
 - **Multi-devises en temps réel** : EUR, USD, FCFA avec taux de change live via [open.er-api.com](https://open.er-api.com) (sans clé API)
+- Page d'accueil adaptative : bilan personnel pour les utilisateurs connectés, section "Comment ça marche" pour les visiteurs
 - Authentification sécurisée via Clerk
 - Base de données PostgreSQL hébergée sur Supabase
 - Interface responsive en français
@@ -126,11 +127,11 @@ etrack/
 │   └── page.tsx           # Page d'accueil
 ├── components/
 │   ├── layout/
-│   │   ├── Navbar.tsx     # Sélecteur de devise intégré
+│   │   ├── Navbar.tsx         # Sélecteur de devise intégré
 │   │   └── Footer.tsx
 │   └── section/
 │       ├── BudgetItem.tsx
-│       ├── BilanSection.tsx   # Bilan global de la page d'accueil
+│       ├── BilanSection.tsx   # Bilan personnel (utilisateurs avec budgets)
 │       ├── Notification.tsx
 │       └── Wrapper.tsx
 ├── context/
