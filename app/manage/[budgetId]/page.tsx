@@ -5,14 +5,16 @@ import {
   addTransactionToBudget,
   deleteBudget,
   deleteTransaction,
+  updateBudget,
 } from "@/app/actions";
 import BudgetItem from "@/components/section/BudgetItem";
 import Wrapper from "@/components/section/Wrapper";
 import Notification from "@/components/section/Notification";
 import React, { useEffect, useState } from "react";
-import { Send, Trash } from "lucide-react";
+import { Pencil, Send, Trash } from "lucide-react";
 import { useCurrency } from "@/context/CurrencyContext";
 import { redirect } from "next/navigation";
+import EmojiPicker from "emoji-picker-react";
 
 const Page = ({ params }: { params: Promise<{ budgetId: string }> }) => {
   const { convert } = useCurrency();
@@ -21,6 +23,12 @@ const Page = ({ params }: { params: Promise<{ budgetId: string }> }) => {
   const [description, setDescription] = useState<string>("");
   const [amount, setAmount] = useState<string>("");
   const [notification, setNotification] = useState<string>("");
+
+  // États pour la modale d'édition
+  const [editName, setEditName] = useState<string>("");
+  const [editAmount, setEditAmount] = useState<string>("");
+  const [editEmoji, setEditEmoji] = useState<string>("");
+  const [showEmojiPicker, setShowEmojiPicker] = useState<boolean>(false);
 
   const closeNotification = () => setNotification("");
 
@@ -45,6 +53,35 @@ const Page = ({ params }: { params: Promise<{ budgetId: string }> }) => {
     };
     init();
   }, [params]);
+
+  const openEditModal = () => {
+    if (!budget) return;
+    setEditName(budget.name);
+    setEditAmount(budget.amount.toString());
+    setEditEmoji(budget.emoji ?? "");
+    setShowEmojiPicker(false);
+    (document.getElementById("modal_edit_budget") as HTMLDialogElement).showModal();
+  };
+
+  const handleUpdateBudget = async () => {
+    const amountNumber = parseFloat(editAmount);
+    if (!editName.trim()) {
+      setNotification("Le nom du budget ne peut pas être vide.");
+      return;
+    }
+    if (isNaN(amountNumber) || amountNumber <= 0) {
+      setNotification("Le montant doit être un nombre positif.");
+      return;
+    }
+    try {
+      await updateBudget(budgetId, editName.trim(), amountNumber, editEmoji);
+      (document.getElementById("modal_edit_budget") as HTMLDialogElement).close();
+      setNotification("Budget mis à jour avec succès.");
+      fetchBudgetData(budgetId);
+    } catch (error) {
+      setNotification("Erreur lors de la mise à jour du budget.");
+    }
+  };
 
   const handleAddTransaction = async () => {
     if (!amount || !description) {
@@ -107,19 +144,105 @@ const Page = ({ params }: { params: Promise<{ budgetId: string }> }) => {
         <Notification message={notification} onclose={closeNotification} />
       )}
 
+      {/* Modale d'édition du budget */}
+      <dialog id="modal_edit_budget" className="modal">
+        <div className="modal-box w-11/12 max-w-md">
+          <form method="dialog">
+            <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
+              ✕
+            </button>
+          </form>
+
+          <h3 className="font-bold text-lg flex items-center gap-2 mb-1">
+            <Pencil className="w-5 h-5 text-accent" />
+            Modifier le budget
+          </h3>
+          <p className="text-gray-500 text-sm mb-4">
+            Modifiez le nom, le montant ou l&apos;émoji de votre budget.
+          </p>
+
+          <div className="flex flex-col gap-3">
+            <label className="form-control w-full">
+              <span className="label-text text-sm mb-1">Nom du budget</span>
+              <input
+                type="text"
+                value={editName}
+                onChange={(e) => setEditName(e.target.value)}
+                className="input input-bordered w-full"
+              />
+            </label>
+
+            <label className="form-control w-full">
+              <span className="label-text text-sm mb-1">Montant alloué</span>
+              <input
+                type="number"
+                value={editAmount}
+                onChange={(e) => setEditAmount(e.target.value)}
+                className="input input-bordered w-full"
+              />
+            </label>
+
+            <label className="form-control w-full">
+              <span className="label-text text-sm mb-1">Émoji</span>
+              <button
+                type="button"
+                className="btn justify-start w-full"
+                onClick={() => setShowEmojiPicker(!showEmojiPicker)}
+              >
+                <span className="text-xl">{editEmoji || "✅"}</span>
+                <span className="text-sm font-normal">
+                  {editEmoji ? "Changer l'émoji" : "Sélectionnez un émoji"}
+                </span>
+              </button>
+            </label>
+
+            {showEmojiPicker && (
+              <div className="flex justify-center">
+                <EmojiPicker
+                  onEmojiClick={(emojiObj) => {
+                    setEditEmoji(emojiObj.emoji);
+                    setShowEmojiPicker(false);
+                  }}
+                />
+              </div>
+            )}
+
+            <button
+              type="button"
+              onClick={handleUpdateBudget}
+              className="btn btn-accent w-full mt-2"
+            >
+              Enregistrer les modifications
+            </button>
+          </div>
+        </div>
+        <form method="dialog" className="modal-backdrop">
+          <button>Fermer</button>
+        </form>
+      </dialog>
+
       {budget && (
         <div className="flex flex-col md:flex-row gap-6">
           {/* Colonne de gauche : carte budget + formulaire */}
           <div className="md:w-1/3 flex flex-col gap-4">
             <BudgetItem budget={budget} enableHover={0} />
 
-            <button
-              onClick={handleDeleteBudget}
-              className="btn btn-outline btn-sm"
-            >
-              <Trash className="w-4" />
-              Supprimer le budget
-            </button>
+            <div className="flex gap-2">
+              <button
+                onClick={openEditModal}
+                className="btn btn-outline btn-sm flex-1"
+              >
+                <Pencil className="w-4" />
+                Modifier
+              </button>
+              <button
+                onClick={handleDeleteBudget}
+                className="btn btn-outline btn-sm flex-1"
+              >
+                <Trash className="w-4" />
+                Supprimer
+              </button>
+            </div>
 
             <div className="card bg-base-100 border border-base-300 p-10 space-y-3">
               <h3 className="font-semibold text-base">Ajouter une dépense</h3>

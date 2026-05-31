@@ -150,6 +150,23 @@ export const deleteBudget = async (budgetId: string) => {
   }
 };
 
+export async function updateBudget(
+  budgetId: string,
+  name: string,
+  amount: number,
+  emoji: string,
+) {
+  try {
+    await prisma.budget.update({
+      where: { id: budgetId },
+      data: { name, amount, emoji },
+    });
+  } catch (error) {
+    console.error("Erreur lors de la mise à jour du budget:", error);
+    throw error;
+  }
+}
+
 export async function deleteTransaction(transactionId: string) {
   try {
     const transaction = await prisma.transaction.findUnique({
