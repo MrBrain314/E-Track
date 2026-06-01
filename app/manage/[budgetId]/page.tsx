@@ -20,6 +20,7 @@ const Page = ({ params }: { params: Promise<{ budgetId: string }> }) => {
   const { convert } = useCurrency();
   const [budgetId, setBudgetId] = useState<string>("");
   const [budget, setBudget] = useState<Budget>();
+  const [loading, setLoading] = useState<boolean>(true);
   const [description, setDescription] = useState<string>("");
   const [amount, setAmount] = useState<string>("");
   const [notification, setNotification] = useState<string>("");
@@ -35,6 +36,7 @@ const Page = ({ params }: { params: Promise<{ budgetId: string }> }) => {
   const fetchBudgetData = async (id: string) => {
     try {
       if (!id) return;
+      setLoading(true);
       const budgetData = await getTransactionsByBudgetId(id);
       setBudget(budgetData);
     } catch (error) {
@@ -42,6 +44,8 @@ const Page = ({ params }: { params: Promise<{ budgetId: string }> }) => {
         "Erreur lors de la récupération du budget et des transactions:",
         error,
       );
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -221,7 +225,12 @@ const Page = ({ params }: { params: Promise<{ budgetId: string }> }) => {
         </form>
       </dialog>
 
-      {budget && (
+      {loading ? (
+        <div className="card bg-base-100 border border-base-300 py-20 flex flex-col items-center justify-center gap-3">
+          <span className="loading loading-spinner loading-lg text-accent"></span>
+          <span className="text-sm text-gray-500">Chargement du budget...</span>
+        </div>
+      ) : budget && (
         <div className="flex flex-col md:flex-row gap-6">
           {/* Colonne de gauche : carte budget + formulaire */}
           <div className="md:w-1/3 flex flex-col gap-4">
@@ -334,6 +343,7 @@ const Page = ({ params }: { params: Promise<{ budgetId: string }> }) => {
         </div>
       )}
     </Wrapper>
+
   );
 };
 

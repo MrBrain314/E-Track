@@ -18,6 +18,7 @@ const Page = () => {
   const [showEmojiPicker, setShowEmojiPicker] = useState<boolean>(false);
   const [selectedEmoji, setSelectedEmoji] = useState<string>("");
   const [budgets, setBudgets] = useState<Budget[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
   const [notification, setNotification] = useState<string>("");
 
   const closeNotification = () => setNotification("");
@@ -59,6 +60,7 @@ const Page = () => {
 
   const fetchBudgets = async () => {
     if (user?.primaryEmailAddress?.emailAddress) {
+      setLoading(true);
       try {
         const userBudgets = await getBudgetsByUser(
           user.primaryEmailAddress.emailAddress,
@@ -68,6 +70,8 @@ const Page = () => {
         setNotification(
           `Erreur lors de la récupération des budgets : ${error}`,
         );
+      } finally {
+        setLoading(false);
       }
     }
   };
@@ -183,7 +187,12 @@ const Page = () => {
       </dialog>
 
       {/* Liste des budgets ou état vide */}
-      {budgets.length > 0 ? (
+      {loading ? (
+        <div className="card bg-base-100 border border-base-300 py-20 flex flex-col items-center justify-center gap-3">
+          <span className="loading loading-spinner loading-lg text-accent"></span>
+          <span className="text-sm text-gray-500">Chargement de vos budgets...</span>
+        </div>
+      ) : budgets.length > 0 ? (
         <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {budgets.map((budget) => (
             <li key={budget.id}>
@@ -215,6 +224,7 @@ const Page = () => {
         </div>
       )}
     </Wrapper>
+
   );
 };
 
