@@ -291,8 +291,8 @@ const Page = ({ params }: { params: Promise<{ budgetId: string }> }) => {
                           <td className="text-2xl text-center align-middle">
                             {transaction.emoji}
                           </td>
-                          <td className="text-right align-middle">
-                            <span className="badge badge-accent badge-sm font-semibold">
+                          <td className="text-center align-middle">
+                            <span className="badge badge-accent font-semibold whitespace-nowrap px-3">
                               - {convert(transaction.amount)}
                             </span>
                           </td>

@@ -129,7 +129,7 @@ const Page = () => {
                   <th className="w-16"></th>
                   <th>Description</th>
                   <th>Budget</th>
-                  <th className="text-right">Montant</th>
+                  <th className="text-center">Montant</th>
                   <th>Date</th>
                   <th>Heure</th>
                   <th className="w-8"></th>
@@ -157,7 +157,7 @@ const Page = () => {
                         {transaction.budgetName}
                       </span>
                     </td>
-                    <td className="text-right align-middle">
+                    <td className="text-center align-middle">
                       <span className="badge badge-accent font-semibold whitespace-nowrap px-3">
                         - {convert(transaction.amount)}
                       </span>
