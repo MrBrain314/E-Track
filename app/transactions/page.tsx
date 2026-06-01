@@ -158,7 +158,7 @@ const Page = () => {
                       </span>
                     </td>
                     <td className="text-right align-middle">
-                      <span className="badge badge-accent badge-sm font-semibold">
+                      <span className="badge badge-accent font-semibold w-auto px-3 justify-center">
                         - {convert(transaction.amount)}
                       </span>
                     </td>
